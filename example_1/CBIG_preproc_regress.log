@@ -1,0 +1,69 @@
+Regression
+[CMD]: CBIG_preproc_regress.csh -s 8BY87 -d /fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3 -anat_s 150630_RV22YN_31676293 -anat_d /fslhome/summerf/fsl_groups/fslg_rdoc/compute/rdoc_freesurfer -bld 001 002 003 004 -BOLD_stem _rest_skip0 -REG_stem _rest_skip0_reg -MASK_stem _rest_skip0 -OUTLIER_stem -wm -csf -motion12_itamar -detrend_method detrend -per_run -censor -polynomial_fit 1
+[Regression]: boldfolder = /fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold
+[Regression]: zpdbold = 001 002 003 004
+=======================Create masks (wb,wm,vent) for regressors=======================
+WARNING: Ventricles mask will be created but -csf_max_erode is not passed in. Maximal erosion will be set to 1. (Erode in anatomical space.)
+/panfs/pan.fsl.byu.edu/scr/grp/fslg_rdoc/CBIG-master/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_create_mask.csh -s 8BY87 -d /fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3 -anat_s 150630_RV22YN_31676293 -anat_d /fslhome/summerf/fsl_groups/fslg_rdoc/compute/rdoc_freesurfer -bld '001 002 003 004' -REG_stem _rest_skip0_reg -MASK_stem _rest_skip0 -csf -csf_max_erode 1 -erode_space anat
+=======================Creating masks done!=======================
+=======================Create mc regressor=======================
+/apps/matlab/r2018b/bin/matlab -nojvm -nodesktop -nodisplay -nosplash -r " addpath(fullfile('/panfs/pan.fsl.byu.edu/scr/grp/fslg_rdoc/CBIG-master/stable_projects/preprocessing/CBIG_fMRI_Preproc2016','utilities')) ; CBIG_preproc_create_mc_regressors '/fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/regression/mc_par_list.txt' '/fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/regression/mc_regressor_list.txt' 'detrend' '1' ; exit "
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2018 The MathWorks, Inc.
+                   R2018b (9.5.0.944444) 64-bit (glnxa64)
+                              August 28, 2018
+
+ 
+For online documentation, see https://www.mathworks.com/support
+For product information, visit www.mathworks.com.
+ 
+{Error using load
+File name is empty.
+
+Error in CBIG_preproc_create_mc_regressors (line 66)
+    par = load(par_name{i});
+} 
+>> =======================Create wb, wm, csf regressors=======================
+/apps/matlab/r2018b/bin/matlab -nojvm -nodesktop -nodisplay -nosplash -r " addpath(fullfile('/panfs/pan.fsl.byu.edu/scr/grp/fslg_rdoc/CBIG-master/stable_projects/preprocessing/CBIG_fMRI_Preproc2016','utilities')) ; CBIG_preproc_create_ROI_regressors '/fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/regression/fMRI_list.txt' '/fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/regression/ROI_regressors_list.txt' '' '' '/fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/mask/8BY87.func.ventricles.nii.gz' '1' ; exit "
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2018 The MathWorks, Inc.
+                   R2018b (9.5.0.944444) 64-bit (glnxa64)
+                              August 28, 2018
+
+ 
+For online documentation, see https://www.mathworks.com/support
+For product information, visit www.mathworks.com.
+ 
+Rescaling NIFTI: slope = 1, intercept = 0
+Rescaling NIFTI: slope = 1, intercept = 0
+Rescaling NIFTI: slope = 1, intercept = 0
+Rescaling NIFTI: slope = 1, intercept = 0
+======================= Create aCompCor regressors =======================
+Do not need to create aCompCor regressors.
+=======================Merge all regressors=======================
+=======================Use glm to regress out all regressors=======================
+/apps/matlab/r2018b/bin/matlab -nojvm -nodesktop -nodisplay -nosplash -r " addpath(fullfile('/panfs/pan.fsl.byu.edu/scr/grp/fslg_rdoc/CBIG-master/stable_projects/preprocessing/CBIG_fMRI_Preproc2016','utilities')) ; CBIG_glm_regress_vol '/fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/regression/fMRI_list.txt' '/fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/regression/resid_list.txt' '/fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/regression/all_regressors_list.txt' '1' '/fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/regression/censor_list.txt' '1' ; exit "
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2018 The MathWorks, Inc.
+                   R2018b (9.5.0.944444) 64-bit (glnxa64)
+                              August 28, 2018
+
+ 
+For online documentation, see https://www.mathworks.com/support
+For product information, visit www.mathworks.com.
+ 
+Rescaling NIFTI: slope = 1, intercept = 0
+{Error using load
+Unable to read file
+'/fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/qc/8BY87_bld001-wm'.
+No such file or directory.
+
+Error in CBIG_glm_regress_vol (line 218)
+            censor_vec = load(censor_name{i});
+} 
+>> =======================Regression done!=======================
+=======================Git: Last Commit of Current Function =======================
+*********************************************************************

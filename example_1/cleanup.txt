@@ -1,0 +1,5 @@
+/fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/001/8BY87_bld001_rest_skip0.nii.gz
+/fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/002/8BY87_bld002_rest_skip0.nii.gz
+/fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/003/8BY87_bld003_rest_skip0.nii.gz
+/fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/004/8BY87_bld004_rest_skip0.nii.gz
+/fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/001/8BY87_bld001_rest_skip0_residc.nii.gz

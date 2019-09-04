@@ -1,0 +1,32 @@
+**************************************************************************
+***************************CBIG fMRI Preprocess***************************
+**************************************************************************
+[LOG]: logfile = /fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/logs/CBIG_preproc_fMRI_preprocess.log
+[CMD]: CBIG_preproc_fMRI_preprocess.csh -s 8BY87 -output_d /fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3 -anat_s 150630_RV22YN_31676293 -anat_d /fslhome/summerf/fsl_groups/fslg_rdoc/compute/rdoc_freesurfer -fmrinii /fslhome/summerf/fsl_groups/fslg_rdoc/compute/CBIG-master/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/rdoc_preproc_fmrinii.txt -config /fslhome/summerf/fsl_groups/fslg_rdoc/compute/CBIG-master/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/rdoc_preproc_config.txt
+Verify your preprocess order:
+CBIG_preproc_skip -skip 0 => CBIG_preproc_bbregister => CBIG_preproc_regress -wm -csf -motion12_itamar -detrend_method detrend -per_run -censor -polynomial_fit 1 => CBIG_preproc_bandpass -low_f 0.009 -high_f 0.08 -detrend  => CBIG_preproc_QC_greyplot -FD_th 0.2 -DV_th 50 => CBIG_preproc_native2fsaverage -proj fsaverage6 -sm 2 -down fsaverage5 => CBIG_preproc_FC_metrics -Pearson_r -censor => CBIG_preproc_native2mni_ants -sm_mask $CBIG_CODE_DIR/data/templates/volume/FSL_MNI152_masks/SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz -final_mask $FSL_DIR/data/standard/MNI152_T1_2mm_brain_mask_dil.nii.gz => DONE!
+lowest_numof_column = 2
+highest_numof_column = 2
+[BOLD INFO]: Number of runs: 4
+[BOLD INFO]: bold run 001 002 003 004
+[BOLD INFO]: bold nifti file is /fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/001/8BY87'_bld001_rest.nii.gz'
+[BOLD INFO]: bold nifti file is /fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/002/8BY87'_bld002_rest.nii.gz'
+[BOLD INFO]: bold nifti file is /fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/003/8BY87'_bld003_rest.nii.gz'
+[BOLD INFO]: bold nifti file is /fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/004/8BY87'_bld004_rest.nii.gz'
+
+
+[CBIG_preproc_skip]: Start...
+[CBIG_preproc_skip] curr_flag = -skip 0
+[CBIG_preproc_skip]: /panfs/pan.fsl.byu.edu/scr/grp/fslg_rdoc/CBIG-master/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_skip.csh -s 8BY87 -d /fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3 -bld '001 002 003 004' -BOLD_stem _rest -skip 0
+[CBIG_preproc_skip]: bold_stem = skip0
+
+[CBIG_preproc_bbregister]: Start...
+[CBIG_preproc_bbregister]: /panfs/pan.fsl.byu.edu/scr/grp/fslg_rdoc/CBIG-master/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_bbregister.csh -s 8BY87 -d /fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3 -anat_s 150630_RV22YN_31676293 -anat_d /fslhome/summerf/fsl_groups/fslg_rdoc/compute/rdoc_freesurfer -bld '001 002 003 004' -BOLD_stem _rest_skip0 
+[CBIG_preproc_bbregister]: bold_stem = reg
+
+[CBIG_preproc_regress]: Start...
+[CBIG_preproc_regress] curr_flag = -wm -csf -motion12_itamar -detrend_method detrend -per_run -censor -polynomial_fit 1
+[CBIG_preproc_regress]: /panfs/pan.fsl.byu.edu/scr/grp/fslg_rdoc/CBIG-master/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_regression.csh -s 8BY87 -d /fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3 -anat_s 150630_RV22YN_31676293 -anat_d /fslhome/summerf/fsl_groups/fslg_rdoc/compute/rdoc_freesurfer -bld '001 002 003 004' -BOLD_stem _rest_skip0 -REG_stem _rest_skip0_reg -MASK_stem _rest_skip0 -OUTLIER_stem  -wm -csf -motion12_itamar -detrend_method detrend -per_run -censor -polynomial_fit 1
+[CBIG_preproc_regress]: bold_stem = residc
+[ERROR]: file /fslhome/summerf/fsl_groups/fslg_rdoc/compute/RDoC_subs/yeo_pipeline_output_3/8BY87/bold/001/8BY87_bld001_rest_skip0_residc.nii.gz can not be found
+[ERROR]: CBIG_preproc_regress fail!
