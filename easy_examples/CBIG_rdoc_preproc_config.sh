@@ -25,7 +25,7 @@ SETUP_PATH=$CBIG_CODE_DIR/setup/CBIG_generic_setup.sh
 source $SETUP_PATH
 
 # DO NOT CHANGE: set up temporary directory for MRIread from FS6.0
-export TMPDIR=/fslhome/summerf/fsl_groups/fslg_rdoc/compute/CBIG-setup/tmpstore #####The original of this line was: "export TMPDIR=/tmpstore". I was getting an error that the TMPDIR did not exist from the supercomputer. Realized because this sets up in .bashrc & .bashprofile and my permission restrictions for the supercomputer that it wasn't allowing this to be created, so set it up in my group 
+export TMPDIR=/fslhome/summerf/fsl_groups/fslg_rdoc/compute/CBIG-setup/tmpstore #####The original of this line was: "export TMPDIR=/tmpstore". Realized because this is set up in .bashrc & .bashprofile and I have permission restrictions for the supercomputer, it wasn't allowing this to be created, so set it up in my group instead. 
 
 # Do NOT CHANGE: set up MATLABPATH so that MATLAB can find startup.m in our repo 
 export MATLABPATH=$CBIG_CODE_DIR/setup
