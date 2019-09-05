@@ -15,10 +15,10 @@
 ##########################################
 # Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-set VERSION = '$Id: CBIG_preproc_fMRI_preprocess.csh, v 1.0 2016/06/09 $'
+set VERSION = '$Id: CBIG_preproc_fMRI_preprocess.csh, v 1.0 2016/06/09 $' ##setting variable version to the string
 
 
-set n = `echo $argv | grep -e -help | wc -l`
+set n = `echo $argv | grep -e -help | wc -l` ##setting n equal to echoing the argument (I believe this is the command put in), searching it for the term "help", and checking line count of that 
 
 # if there is no arguments or there is -help option 
 if( $#argv == 0 || $n != 0 ) then
@@ -34,6 +34,7 @@ if($n != 0) then
 	exit 0;
 endif
 
+##this section hard codes these variables
 set subject = ""    # subject ID
 set anat = ""       # recon-all folder
 set anat_dir = ""   # path to recon-all folder
@@ -50,6 +51,7 @@ set nocleanup = 0   # default clean up intermediate files
 set root_dir = `python -c "import os; print(os.path.realpath('$0'))"`
 set root_dir = `dirname $root_dir`
 
+##these send you to bottom of script for parsing the arguments and checking paramaters and then comes back if everything is good to go. 
 goto parse_args;
 parse_args_return:
 
@@ -60,12 +62,12 @@ check_params_return:
 # Set preprocess log file and cleanup file
 ##########################################
 
-mkdir -p $output_dir/$subject/logs
-set LF = $output_dir/$subject/logs/CBIG_preproc_fMRI_preprocess.log
+mkdir -p $output_dir/$subject/logs ##makes log directory
+set LF = $output_dir/$subject/logs/CBIG_preproc_fMRI_preprocess.log ##sets LF equal to the .log
 if( -e $LF ) then
 	rm $LF
 endif
-touch $LF
+touch $LF ##Actually creates .log
 set cleanup_file = $output_dir/$subject/logs/cleanup.txt
 if( -e $cleanup_file ) then
 	rm $cleanup_file
@@ -74,8 +76,8 @@ touch $cleanup_file
 echo "**************************************************************************" >> $LF
 echo "***************************CBIG fMRI Preprocess***************************" >> $LF
 echo "**************************************************************************" >> $LF
-echo "[LOG]: logfile = $LF" >> $LF
-echo "[CMD]: CBIG_preproc_fMRI_preprocess.csh $cmdline"   >> $LF
+echo "[LOG]: logfile = $LF" >> $LF ##puts these lines in the logfile (which right now is the CBIG_preproc_fMRI_preprocess.csh
+echo "[CMD]: CBIG_preproc_fMRI_preprocess.csh $cmdline"   >> $LF 
 
 ##########################################
 # Set env and git log file
@@ -90,7 +92,8 @@ echo "***************************Env variable***************************" >> $en
 env >> $env_log
 
 # check if git exists
-which git
+which git ##searches for which git is loaded
+##this next part it checks if it exists, if not it gives warning; if it does then creates git.log and begins it, sending things to it.
 if ($status) then
     echo "WARNING: could not find git, skip generating git log." >> $LF
 else
@@ -110,6 +113,7 @@ egrep -v '^#' $config | tr -s '\n' > $config_clean
 set config = $config_clean
 
 #print out the preprocessing order
+##prints out every step from config file to LF in one chunk with => between each
 echo "Verify your preprocess order:" >> $LF
 foreach step ( "`cat $config`" )
 	echo -n $step" => " >> $LF
@@ -122,6 +126,7 @@ echo "DONE!" >> $LF
 ##########################################
 
 #check fmri nifti file list columns
+##takes these numbers from the fmrinii_file we created and then echoes to LF
 set lowest_numof_column = (`awk '{print NF}' $fmrinii_file | sort -nu | head -n 1`)
 set highest_numof_column = (`awk '{print NF}' $fmrinii_file | sort -nu | tail -n 1`)
 echo "lowest_numof_column = $lowest_numof_column" >> $LF
@@ -148,6 +153,7 @@ set boldname = (`awk -F " " '{printf($2" ")}' $fmrinii_file`)
 
 #set output structure
 @ k = 1
+##this essentially checks to make sure that the bold image/run does not already exist, and if it doesn't, puts it into a file, gives it proper name or if it does gives warning. And echoes to LF
 foreach curr_bold ($zpdbold)
 	if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz" ) then
 		mkdir -p $output_dir/$subject/bold/$curr_bold
@@ -168,7 +174,7 @@ echo "" >> $LF
 ##########################################
 # Loop through each preprocess step
 ##########################################
-
+##This is the main loop. for each preprocessing step it looks at the config file, echoes which step it is on, sets variables according to the information for that specific step, makes sure it has all the correct argumetns (codes them from 0 to 1, outputs it to the LF.
 foreach step ( "`cat $config`" )
 	echo "" >> $LF
 	
@@ -191,12 +197,14 @@ foreach step ( "`cat $config`" )
 	# Preprocess step: Skip first n frames 
 	##########################################
 	
+	##this is the first preprocess step. It first checks if it is the step that needs to be run. If it is, then it brings in the c shell script for the prompt and adds all of the commands, inputs, and flags needed and runs that command.
 	if ( "$curr_step" == "CBIG_preproc_skip" ) then
 		
 		set cmd = "$root_dir/CBIG_preproc_skip.csh -s $subject -d $output_dir -bld '$zpdbold' -BOLD_stem $BOLD_stem $curr_flag"
 		echo "[$curr_step]: $cmd" >> $LF
 		eval $cmd >&  /dev/null
 		
+	##Once that script has been run, it then comes back to this script and checks the input flag and sets the skip based on that. This is for purpose of updating .log
 		#update stem
 		if ( $inputflag != 1 ) then
 			set curr_stem = ("skip"`echo $curr_flag | awk -F "-skip" '{print $2}' | awk -F " " '{print $1}'`)
@@ -210,7 +218,7 @@ foreach step ( "`cat $config`" )
 		#check existence of output
 		foreach curr_bold ($zpdbold)
 		
-		#put output into cleanup file
+		##put output into cleanup file and gives error if they can't find output
 		echo $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz >> $cleanup_file
 		
 			if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld"$curr_bold$BOLD_stem.nii.gz ) then
